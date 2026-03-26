@@ -4,13 +4,29 @@
 @theme {
   --color-silver-pink: #C9A0AB;
 }
+@custom-variant dark (&:is(.dark *));
 
 body {
-  @apply bg-[#111827] text-gray-100;
+  @apply bg-gray-50 dark:bg-[#111827] text-gray-900 dark:text-gray-100 transition-colors;
 }
 
-/* Custom styling for prose */
+/* Custom styling for prose (Light Mode Default) */
 .custom-prose-pink {
+  --tw-prose-body: theme('colors.gray.700');
+  --tw-prose-headings: #9B6A78;
+  --tw-prose-links: #9B6A78;
+  --tw-prose-bold: theme('colors.gray.900');
+  --tw-prose-quotes: theme('colors.gray.600');
+  --tw-prose-quote-borders: #9B6A78;
+  --tw-prose-bullets: #9B6A78;
+  --tw-prose-counters: #9B6A78;
+  --tw-prose-hr: theme('colors.gray.200');
+  --tw-prose-th-borders: theme('colors.gray.300');
+  --tw-prose-td-borders: theme('colors.gray.200');
+}
+
+/* Enhanced Dark Mode Overrides */
+.dark .custom-prose-pink {
   --tw-prose-body: theme('colors.gray.300');
   --tw-prose-headings: var(--color-silver-pink);
   --tw-prose-links: var(--color-silver-pink);
@@ -35,7 +51,7 @@ body {
 }
 
 .custom-prose-pink h2 {
-  @apply text-3xl font-bold mt-10 mb-6 border-b border-gray-800/80 pb-3;
+  @apply text-3xl font-bold mt-10 mb-6 border-b border-gray-200 dark:border-gray-800/80 pb-3 transition-colors;
 }
 
 .custom-prose-pink h3 {
@@ -61,22 +77,22 @@ body {
 
 /* Table Styling */
 .custom-prose-pink table {
-  @apply w-full text-left border-collapse my-8 rounded-xl overflow-hidden ring-1 ring-gray-800 shadow-sm bg-gray-900/30;
+  @apply w-full text-left border-collapse my-8 rounded-xl overflow-hidden ring-1 ring-gray-200 dark:ring-gray-800 shadow-sm bg-white dark:bg-gray-900/30 transition-colors;
 }
 
 .custom-prose-pink th {
-  @apply bg-gray-800/50 p-4 font-semibold text-[#C9A0AB] uppercase text-xs tracking-wider border-b border-gray-700;
+  @apply bg-gray-50 dark:bg-gray-800/50 p-4 font-semibold text-[#9B6A78] dark:text-[#C9A0AB] uppercase text-xs tracking-wider border-b border-gray-200 dark:border-gray-700 transition-colors;
 }
 
 .custom-prose-pink td {
-  @apply p-4 border-b border-gray-800/50 align-top text-gray-300;
+  @apply p-4 border-b border-gray-100 dark:border-gray-800/50 align-top text-gray-700 dark:text-gray-300 transition-colors;
 }
 
 .custom-prose-pink tr:last-child td {
   @apply border-b-0;
 }
 
-/* Remove default backticks on inline code provided by standard `@tailwindcss/typography` */
+/* Remove default backticks */
 .custom-prose-pink code::before,
 .custom-prose-pink code::after {
   content: none !important;
@@ -84,12 +100,12 @@ body {
 
 /* Links */
 .custom-prose-pink a {
-  @apply underline underline-offset-4 decoration-gray-600 hover:decoration-[#C9A0AB] transition-colors duration-200;
+  @apply underline underline-offset-4 decoration-gray-300 dark:decoration-gray-600 hover:decoration-[#9B6A78] dark:hover:decoration-[#C9A0AB] transition-colors duration-200;
 }
 
 /* Extra blockquote styling */
 .custom-prose-pink blockquote {
-  @apply border-l-4 pl-6 italic my-8 py-2 bg-gray-900/30 rounded-r-lg;
+  @apply border-l-4 pl-6 italic my-8 py-2 bg-gray-50 dark:bg-gray-900/30 rounded-r-lg border-[#9B6A78] dark:border-[#C9A0AB] transition-colors;
 }
 
 /* Subdue syntax highlighter background completely since we handle it in our wrapper */

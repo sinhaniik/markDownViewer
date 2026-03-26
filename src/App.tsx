@@ -11,11 +11,27 @@ function App() {
     return saved !== null ? saved : DEFAULT_MARKDOWN;
   });
   
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('theme');
+    return (saved === 'dark' || saved === 'light') ? saved : 'dark';
+  });
+
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('markdown', markdown);
   }, [markdown]);
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -30,7 +46,6 @@ function App() {
 
   const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    // Leaving the overlay itself hides it seamlessly without flickering
     setIsDragging(false);
   };
 
@@ -44,7 +59,6 @@ function App() {
         const content = await readMarkdownFile(file);
         setMarkdown(content);
       } catch (err) {
-        // Will reject if file is not .md, aligning smoothly with "Handle Invalid file type"
         console.warn((err as Error).message);
       }
     }
@@ -52,28 +66,37 @@ function App() {
 
   return (
     <div 
-      className="flex w-screen h-screen overflow-hidden bg-gray-900 text-gray-100 font-sans relative"
+      className="flex w-screen h-screen overflow-hidden bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans relative transition-colors"
       onDragEnter={handleDragEnter}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div className="w-1/2 h-full border-r border-gray-800">
+      <div className="w-1/2 h-full border-r border-gray-200 dark:border-gray-800 transition-colors">
         <Editor value={markdown} onChange={setMarkdown} />
       </div>
-      <div className="w-1/2 h-full">
+      <div className="w-1/2 h-full relative">
         <Viewer content={markdown} />
       </div>
 
+      {/* Floating Theme Toggle */}
+      <button 
+        onClick={toggleTheme}
+        className="absolute top-4 right-4 z-[60] p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center cursor-pointer"
+        aria-label="Toggle theme"
+      >
+        {theme === 'dark' ? '☀️' : '🌙'}
+      </button>
+
       {isDragging && (
         <div 
-          className="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 flex items-center justify-center border-[3px] border-dashed border-[#C9A0AB] m-4 rounded-xl transition-all"
+          className="fixed inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-50 flex items-center justify-center border-[3px] border-dashed border-[#9B6A78] dark:border-[#C9A0AB] m-4 rounded-xl transition-all"
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
         >
           <div className="text-center pointer-events-none">
-            <h2 className="text-3xl font-bold text-gray-100 mb-3 tracking-wide">Drop your .md file here</h2>
-            <p className="text-gray-400 font-medium">Release to instantly render the markdown content.</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 tracking-wide">Drop your .md file here</h2>
+            <p className="text-gray-600 dark:text-gray-400 font-medium">Release to instantly render the markdown content.</p>
           </div>
         </div>
       )}
