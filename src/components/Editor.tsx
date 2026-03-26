@@ -24,22 +24,22 @@ export const parseGitHubUrl = (url: string) => {
   return null;
 };
 
+import { readMarkdownFile } from '../utils/fileReader';
+
 export const Editor: React.FC<EditorProps> = ({ value, onChange }) => {
   const [githubUrl, setGithubUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.name.endsWith('.md')) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const content = e.target?.result;
-        if (typeof content === 'string') {
-          onChange(content);
-        }
-      };
-      reader.readAsText(file);
+    if (file) {
+      try {
+        const content = await readMarkdownFile(file);
+        onChange(content);
+      } catch (err) {
+        // Gracefully ignore or set error if necessary. The FileReader previously silently ignored invalid files.
+      }
     }
   };
 
