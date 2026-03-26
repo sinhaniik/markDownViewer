@@ -6,27 +6,93 @@
 }
 
 body {
-  @apply bg-gray-900 text-gray-100;
+  @apply bg-[#111827] text-gray-100;
 }
 
-/* Custom styling for prose to use Silver Pink */
+/* Custom styling for prose */
 .custom-prose-pink {
+  --tw-prose-body: theme('colors.gray.300');
   --tw-prose-headings: var(--color-silver-pink);
   --tw-prose-links: var(--color-silver-pink);
-  --tw-prose-bold: var(--color-silver-pink);
-  --tw-prose-quotes: var(--color-silver-pink);
+  --tw-prose-bold: theme('colors.gray.100');
+  --tw-prose-quotes: theme('colors.gray.400');
   --tw-prose-quote-borders: var(--color-silver-pink);
   --tw-prose-bullets: var(--color-silver-pink);
-  --tw-prose-hr: var(--color-silver-pink);
-  --tw-prose-th-borders: var(--color-silver-pink);
-  --tw-prose-td-borders: theme(colors.gray.700);
+  --tw-prose-counters: var(--color-silver-pink);
+  --tw-prose-hr: theme('colors.gray.800');
+  --tw-prose-th-borders: theme('colors.gray.700');
+  --tw-prose-td-borders: theme('colors.gray.800');
 }
 
-.custom-prose-pink code {
-  color: var(--color-silver-pink);
+/* Paragraph & Line Height Enhancements */
+.custom-prose-pink p {
+  @apply leading-8 mb-6 mt-0;
 }
 
-/* Make highlight.js dark mode background blend well */
+/* Heading Hierarchy & Spacing */
+.custom-prose-pink h1 {
+  @apply text-4xl sm:text-5xl font-extrabold mt-12 mb-8 tracking-tight;
+}
+
+.custom-prose-pink h2 {
+  @apply text-3xl font-bold mt-10 mb-6 border-b border-gray-800/80 pb-3;
+}
+
+.custom-prose-pink h3 {
+  @apply text-2xl font-semibold mt-8 mb-4 tracking-normal;
+}
+
+.custom-prose-pink h4 {
+  @apply text-xl font-medium mt-6 mb-4;
+}
+
+/* List Indentation & Spacing */
+.custom-prose-pink ul, .custom-prose-pink ol {
+  @apply my-6 ml-4 space-y-3;
+}
+
+.custom-prose-pink li {
+  @apply leading-7 pl-2;
+}
+
+.custom-prose-pink li > p {
+  @apply my-2;
+}
+
+/* Table Styling */
+.custom-prose-pink table {
+  @apply w-full text-left border-collapse my-8 rounded-xl overflow-hidden ring-1 ring-gray-800 shadow-sm bg-gray-900/30;
+}
+
+.custom-prose-pink th {
+  @apply bg-gray-800/50 p-4 font-semibold text-[#C9A0AB] uppercase text-xs tracking-wider border-b border-gray-700;
+}
+
+.custom-prose-pink td {
+  @apply p-4 border-b border-gray-800/50 align-top text-gray-300;
+}
+
+.custom-prose-pink tr:last-child td {
+  @apply border-b-0;
+}
+
+/* Remove default backticks on inline code provided by standard `@tailwindcss/typography` */
+.custom-prose-pink code::before,
+.custom-prose-pink code::after {
+  content: none !important;
+}
+
+/* Links */
+.custom-prose-pink a {
+  @apply underline underline-offset-4 decoration-gray-600 hover:decoration-[#C9A0AB] transition-colors duration-200;
+}
+
+/* Extra blockquote styling */
+.custom-prose-pink blockquote {
+  @apply border-l-4 pl-6 italic my-8 py-2 bg-gray-900/30 rounded-r-lg;
+}
+
+/* Subdue syntax highlighter background completely since we handle it in our wrapper */
 .hljs {
   background: transparent !important;
   padding: 0 !important;
