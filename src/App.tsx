@@ -2,6 +2,7 @@ import { useState, useEffect, DragEvent } from 'react';
 import { Editor } from './components/Editor';
 import { Viewer } from './components/Viewer';
 import { readMarkdownFile } from './utils/fileReader';
+import { exportToHTML, exportToPDF } from './utils/exportUtils';
 
 const DEFAULT_MARKDOWN = '# Markdown Viewer\n\nWelcome to the clean, minimal markdown viewer.\n\n## Features\n- **Live Preview:** See changes instantly on the right.\n- **Syntax Highlighting:** Full support for code blocks.\n- **GitHub Flavored Markdown:** Tables, strikethrough, and more.\n\n### Code Example\n```tsx\nfunction sayHello() {\n  console.log("Hello World!");\n}\n```\n\n### Tables\n| Feature | Status |\n|---------|--------|\n| Redux | Removed |\n| Router | Removed |\n| Markdown | Added |';
 
@@ -78,14 +79,28 @@ function App() {
         <Viewer content={markdown} />
       </div>
 
-      {/* Floating Theme Toggle */}
-      <button 
-        onClick={toggleTheme}
-        className="absolute top-4 right-4 z-[60] p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center cursor-pointer"
-        aria-label="Toggle theme"
-      >
-        {theme === 'dark' ? '☀️' : '🌙'}
-      </button>
+      {/* Floating Header Actions */}
+      <div className="absolute top-4 right-4 z-[60] flex items-center gap-3">
+        <button 
+          onClick={exportToHTML}
+          className="px-3.5 py-2 text-sm font-semibold rounded-lg bg-[#C9A0AB]/10 text-[#C9A0AB] border border-[#C9A0AB]/30 hover:bg-[#C9A0AB]/20 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C9A0AB]/50 dark:bg-[#C9A0AB]/5 dark:hover:bg-[#C9A0AB]/10 backdrop-blur-sm"
+        >
+          Download HTML
+        </button>
+        <button 
+          onClick={exportToPDF}
+          className="px-3.5 py-2 text-sm font-semibold rounded-lg bg-[#C9A0AB] text-white hover:bg-[#b08591] transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C9A0AB]/50 border border-transparent backdrop-blur-sm"
+        >
+          Export PDF
+        </button>
+        <button 
+          onClick={toggleTheme}
+          className="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm border border-gray-300 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center cursor-pointer ml-1"
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+      </div>
 
       {isDragging && (
         <div 
