@@ -1,7 +1,11 @@
+/// <reference types="vite-plugin-pwa/client" />
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
+import { registerSW } from 'virtual:pwa-register';
+
+registerSW({ immediate: true });
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

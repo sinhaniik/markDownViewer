@@ -139,7 +139,7 @@ npm run dev
 
 ## 📷 Screenshots
 
-![Markdown Viewer Web App Screenshot](./public/screenshot.png)
+![Markdown Viewer Web App Screenshot](/screenshot.png)
 
 ---
 

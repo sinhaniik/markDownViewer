@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { exportToHTML, exportToPDF } from '../utils/exportUtils';
 
 interface HeaderActionsProps {
@@ -9,6 +9,30 @@ interface HeaderActionsProps {
 
 export const HeaderActions: React.FC<HeaderActionsProps> = ({ theme, toggleTheme, markdown }) => {
   const [copySuccess, setCopySuccess] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    }
+  };
 
   const handleShare = () => {
     if (!markdown.trim()) return;
@@ -36,6 +60,14 @@ export const HeaderActions: React.FC<HeaderActionsProps> = ({ theme, toggleTheme
 
   return (
     <div className="absolute top-4 right-4 z-[60] flex items-center gap-3 pointer-events-auto">
+      {deferredPrompt && (
+        <button 
+          onClick={handleInstallClick}
+          className="px-3.5 py-2 text-sm font-semibold rounded-lg bg-green-500/10 text-green-600 border border-green-500/30 hover:bg-green-500/20 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 dark:bg-green-400/10 dark:text-green-400 dark:hover:bg-green-400/20 backdrop-blur-sm"
+        >
+          Install App
+        </button>
+      )}
       <button 
         onClick={handleShare}
         className="px-3.5 py-2 text-sm font-semibold rounded-lg bg-[#C9A0AB]/10 text-[#C9A0AB] border border-[#C9A0AB]/30 hover:bg-[#C9A0AB]/20 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C9A0AB]/50 dark:bg-[#C9A0AB]/5 dark:hover:bg-[#C9A0AB]/10 backdrop-blur-sm relative"
