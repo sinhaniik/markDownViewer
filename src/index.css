@@ -100,6 +100,18 @@ body {
   content: none !important;
 }
 
+/* Force coding font consistently */
+.custom-prose-pink code,
+.custom-prose-pink pre {
+  font-family: var(--font-mono) !important;
+  font-variant-ligatures: contextual;
+  font-size: 14px !important;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono) !important;
+}
+
 /* Links */
 .custom-prose-pink a {
   @apply underline underline-offset-4 decoration-gray-300 dark:decoration-gray-600 hover:decoration-[#9B6A78] dark:hover:decoration-[#C9A0AB] transition-colors duration-200;
